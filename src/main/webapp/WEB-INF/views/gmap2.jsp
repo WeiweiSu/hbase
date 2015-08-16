@@ -100,7 +100,7 @@
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-crosshairs"></i> Heat Map <i class="fa fa-fw fa-ret-down"></i></a>
                         <ul id="demo" class="collapse">
                             <li class="active">
-                                <a href="heatmap-year.html">United States</a>
+                                <a href="gmap2_usa">United States</a>
                             </li>
                             <li>
                                 <a href="gmap2">Individual States</a>
@@ -162,7 +162,7 @@
                 <h1>Loading Data...</h1>
                 <div class="progress">
                     <div id="progress-bar" class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-                        <span class="sr-only">0% Complete </span>
+                        <span class="sr-only">10% Complete </span>
                     </div>
                 </div>
             </div>
@@ -229,7 +229,7 @@
         console.log("Points count are: " + count);
 
         var mapOptions = {
-            zoom: 6,
+            zoom: 7,
             center: new google.maps.LatLng(lati, longi),
             // center: new google.maps.LatLng(17.75, -64.75),
             mapTypeId: google.maps.MapTypeId.HYBRID
@@ -243,6 +243,10 @@
         heatmap = new google.maps.visualization.HeatmapLayer({
             data: heatdata
         });
+        
+        //var trafficLayer = new google.maps.TrafficLayer();
+        
+        //trafficLayer.setMap(map);
 
         heatmap.setMap(map);
     }

@@ -8,8 +8,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class GmapController {
 	
 	@RequestMapping(value="/gmap2", method=RequestMethod.GET)
-	public String showPage() {
+	public String showGmap() {
 		return "gmap2";
 	}
 	
+	@RequestMapping(value="/gmap2_usa", method=RequestMethod.GET)
+	public String showGmap2USA() {
+		return "gmap2_usa";
+	}
 }
