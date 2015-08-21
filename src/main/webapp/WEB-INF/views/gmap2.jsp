@@ -75,7 +75,7 @@
     <div id="wrapper">
         <!-- begin wrapper -->
         <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar top-nav navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -96,19 +96,22 @@
                     <li>
                         <a href="page2"><i class="fa fa-fw fa-dashboard"></i> Search a Physician</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-crosshairs"></i> Heat Map <i class="fa fa-fw fa-ret-down"></i></a>
                         <ul id="demo" class="collapse">
-                            <li class="active">
+                            <li>
                                 <a href="gmap2_usa">United States</a>
                             </li>
-                            <li>
+                            <li class="active">
                                 <a href="gmap2">Individual States</a>
                             </li>
                         </ul>
                     </li>
                     <li>
                         <a href="gmap2_chart.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                    </li>
+                    <li>
+                        <a href="mahout"><i class="fa fa-fw fa-bar-chart-o"></i>Event Classification</a>
                     </li>
                     <li>
                         <div class="dropdown">

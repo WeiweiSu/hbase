@@ -21,7 +21,7 @@
     <style>
     html,
     body,
-    #map-nvas {
+    #map-canvas {
         height: 100%;
         margin: 0;
         padding: 0;
@@ -75,7 +75,7 @@
     <div id="wrapper">
         <!-- begin wrapper -->
         <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar top-nav navbar-fixed-top" role="navigation">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -96,7 +96,7 @@
                     <li>
                         <a href="page2"><i class="fa fa-fw fa-dashboard"></i> Search a Physician</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-crosshairs"></i> Heat Map <i class="fa fa-fw fa-ret-down"></i></a>
                         <ul id="demo" class="collapse">
                             <li class="active">
@@ -110,53 +110,14 @@
                     <li>
                         <a href="gmap2_chart.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
                     </li>
-                    <!-- <li>
-                        <div class="dropdown">
-                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Particular State
-                                <span class="ret"></span></button>
-                            <ul class="dropdown-menu">
-                                <li><a onclick="refreshMap('CA')">CA</a></li>
-                                <li><a onclick="refreshMap('PA')">PA</a></li>
-                                <li><a onclick="refreshMap('MA')">MA</a></li>
-                                <li><a onclick="refreshMap('TX')">TX</a></li>
-                                <li><a onclick="refreshMap('FL')">FL</a></li>
-                                <li><a onclick="refreshMap('IL')">IL</a></li>
-                                <li><a onclick="refreshMap('MI')">MI</a></li>
-                                <li><a onclick="refreshMap('OH')">OH</a></li>
-                                <li><a onclick="refreshMap('MA')">MA</a></li>
-                                <li><a onclick="refreshMap('VA')">VA</a></li>
-                                <li><a onclick="refreshMap('GA')">GA</a></li>
-                                <li><a onclick="refreshMap('NC')">NC</a></li>
-                                <li><a onclick="refreshMap('WI')">WI</a></li>
-                                <li><a onclick="refreshMap('NJ')">NJ</a></li>
-                                <li><a onclick="refreshMap('MN')">MN</a></li>
-                                <li><a onclick="refreshMap('WA')">WA</a></li>
-                                <li><a onclick="refreshMap('MD')">MD</a></li>
-                                <li><a onclick="refreshMap('MO')">MO</a></li>
-                                <li><a onclick="refreshMap('TN')">TN</a></li>
-                                <li><a onclick="refreshMap('AZ')">AZ</a></li>
-                                <li><a onclick="refreshMap('IN')">IN</a></li>
-                                <li><a onclick="refreshMap('CO')">CO</a></li>
-                                <li><a onclick="refreshMap('AL')">AL</a></li>
-                                <li><a onclick="refreshMap('CT')">CT</a></li>
-                                <li><a onclick="refreshMap('KY')">KY</a></li>
-                                <li><a onclick="refreshMap('OR')">OR</a></li>
-                                <li><a onclick="refreshMap('LA')">LA</a></li>
-                                <li><a onclick="refreshMap('SC')">SC</a></li>
-                                <li><a onclick="refreshMap('ME')">ME</a></li>
-                                <li><a onclick="refreshMap('IA')">IA</a></li>
-                                <li><a onclick="refreshMap('WV')">WV</a></li>
-                                <li><a onclick="refreshMap('NH')">NH</a></li>
-                                <li><a onclick="refreshMap('VKS')">KS</a></li>
-                                <li><a onclick="refreshMap('OK')">OK</a></li>
-                            </ul>
-                        </div>
-                    </li> -->
+                    <li>
+                        <a href="mahout"><i class="fa fa-fw fa-bar-chart-o"></i>Event Classification</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </nav>
-        <div id="map-nvas">
+        <div id="map-canvas">
             <!-- Cover -->
             <div class="cover">
                 <h1>Loading Data...</h1>
@@ -192,10 +153,10 @@
     console.log("window height " + window.innerHeight);
     console.log("Avail Height" + screen.availHeight);
 
-    $("#map-nvas").css("height", map_height);
+    $("#map-canvas").css("height", map_height);
     var data_wrap_height = Math.floor(map_height * 0.25);
     $(".data-wrap").css("height", data_wrap_height);
-    $(".data-wrap").css("width", $("#map-nvas").width());
+    $(".data-wrap").css("width", $("#map-canvas").width());
 
 
     var filePath = "resources/data/uniqueWholeRecordsLatLon.csv";
@@ -235,7 +196,7 @@
             mapTypeId: google.maps.MapTypeId.HYBRID
         };
 
-        map = new google.maps.Map(document.getElementById('map-nvas'),
+        map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
 
         // var pointArray = new google.maps.MVrray(heatdata);
@@ -248,10 +209,24 @@
     }
 
 
-    function ready(error, data1) {
+    /* function ready(error, data1) {
         google.maps.event.addDomListener(window, 'load', initialize(data1));
+        d3.selectAll(".cover").transition().delay(10000).remove();
+        d3.selectAll(".data-wrap").style("display", "inline");
+    } */
+    
+    function ready(error, data1) {
+    	loadmap(data1, function() {
+    		 d3.selectAll(".cover").transition().delay(10000).remove();
+    	     d3.selectAll(".data-wrap").style("display", "inline");
+    	})
+       
     }
 
+    function loadmap(data1, callback) {
+    	google.maps.event.addDomListener(window, 'load', initialize(data1));
+    	callback();
+    }
 
     var lati, longi;
 
@@ -261,21 +236,32 @@
         //initial queue
         var progress = 0.1,
             //total = 77100000;
-            //total = 270113160;
-            total = 870113160;
+            total = 13160;
 
 
         queue()
             .defer(function(f) {
                 d3.csv(filePath)
                     .on("progress", function() {
-                        var percentComplete = d3.event.loaded / total;
+                    	
+                    	/* if (d3.event.lengthComputable) {
+                            var percentComplete = Math.round(d3.event.loaded * 100 / d3.event.total);
+                            console.log(percentComplete);
+                         } */
+                    	
+                    	var percentComplete = Math.round(d3.event.loaded * 100 / d3.event.total);
+                        if (percentComplete < 101) {
+                            console.log("Finish " + percentComplete + "%.");
+                            d3.select("#progress-bar").style("width", percentComplete + "%");
+                        } 
+                    	
+                        /* var percentComplete = d3.event.loaded / total;
                         if (percentComplete > progress) {
                             console.log("Finish " + progress * 100 + "%.");
                             d3.select("#progress-bar").style("width", progress * 100 + "%");
-                            progress += 0.1;
-                        }
-                    }, false)
+                            progress += 70;
+                        } */
+                    })
                     .get(function(error, d) {
                         progress = 1;
                         d3.select("#progress-bar").style("width", progress * 100 + "%");
